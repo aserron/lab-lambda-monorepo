@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: lambda-dev-localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=${DEBUG-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # only required for Pro
+      - PERSISTENCE=${PERSISTENCE-}
+      - SERVICES=lambda,apigateway,dynamodb,s3,sqs,sns,cloudwatch,iam
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  dynamodb-admin:
+    container_name: lambda-dev-dynamodb-admin
+    image: aaronshaf/dynamodb-admin:latest
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    depends_on:
+      - localstack
+
+  s3-explorer:
+    container_name: lambda-dev-s3-explorer
+    image: cloudlibz/s3explorer:latest
+    ports:
+      - "8002:8000"
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+      - S3_ENDPOINT=http://localstack:4566
+    depends_on:
+      - localstack
+
+networks:
+  default:
+    name: lambda-dev-network

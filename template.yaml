@@ -1,0 +1,147 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda Dev - Local development template for AWS SAM
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs18.x
+    Tracing: Active
+    Environment:
+      Variables:
+        NODE_OPTIONS: --enable-source-maps
+        CONNECTIONS_TABLE: websocket-connections
+        AWS_ENDPOINT_URL: http://host.docker.internal:4566
+
+Resources:
+  # HTTP API Lambda Functions
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/http-api/
+      Handler: dist/handlers/hello.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: hello-service
+          POWERTOOLS_METRICS_NAMESPACE: HelloService
+      Events:
+        HelloApi:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+
+  # WebSocket Lambda Functions
+  ConnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/websocket/
+      Handler: dist/handlers/connect.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: websocket-service
+          POWERTOOLS_METRICS_NAMESPACE: WebSocketService
+      Events:
+        WebSocketConnect:
+          Type: WebSocket
+          Properties:
+            Route: $connect
+
+  DisconnectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/websocket/
+      Handler: dist/handlers/disconnect.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: websocket-service
+          POWERTOOLS_METRICS_NAMESPACE: WebSocketService
+      Events:
+        WebSocketDisconnect:
+          Type: WebSocket
+          Properties:
+            Route: $disconnect
+
+  MessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/websocket/
+      Handler: dist/handlers/message.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: websocket-service
+          POWERTOOLS_METRICS_NAMESPACE: WebSocketService
+      Events:
+        WebSocketMessage:
+          Type: WebSocket
+          Properties:
+            Route: message
+
+  # Event-Driven Lambda Functions
+  S3ProcessorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/events/
+      Handler: dist/handlers/s3-processor.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: s3-processor-service
+          POWERTOOLS_METRICS_NAMESPACE: S3ProcessorService
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref DataBucket
+            Events: s3:ObjectCreated:*
+
+  SQSConsumerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: packages/lambdas/events/
+      Handler: dist/handlers/sqs-consumer.handler
+      Environment:
+        Variables:
+          POWERTOOLS_SERVICE_NAME: sqs-consumer-service
+          POWERTOOLS_METRICS_NAMESPACE: SQSConsumerService
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ProcessingQueue.Arn
+            BatchSize: 10
+
+  # Resources
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: lambda-dev-data
+
+  ProcessingQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: lambda-dev-processing-queue
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+        maxReceiveCount: 3
+
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: lambda-dev-dead-letter-queue
+
+Outputs:
+  HelloApi:
+    Description: "API Gateway endpoint URL for Hello function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+
+  WebSocketApi:
+    Description: "WebSocket API endpoint URL"
+    Value: !Sub "wss://${ServerlessWebSocketApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+
+  DataBucketName:
+    Description: "S3 bucket for data storage"
+    Value: !Ref DataBucket
+
+  ProcessingQueueUrl:
+    Description: "SQS queue for processing messages"
+    Value: !Ref ProcessingQueue

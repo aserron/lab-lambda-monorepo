@@ -1,0 +1,27 @@
+{
+  "name": "@lambda-dev/websocket",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@lambda-dev/core": "*",
+    "@aws-lambda-powertools/logger": "^1.5.1",
+    "@aws-lambda-powertools/tracer": "^1.5.1",
+    "@aws-lambda-powertools/metrics": "^1.5.1",
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.300.0",
+    "@aws-sdk/client-dynamodb": "^3.300.0",
+    "@aws-sdk/lib-dynamodb": "^3.300.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -3,9 +3,9 @@
 /**
  * Creates a standardized API response
  */
-export function createApiResponse<T>(
+export function createApiResponse(
   statusCode: number,
-  body: T,
+  body: any,
   headers: Record<string, string> = {}
 ) {
   return {
@@ -46,7 +46,7 @@ export function createErrorResponse(
  */
 export function parseEventBody<T>(body: string | null): T | null {
   if (!body) return null;
-  
+
   try {
     return JSON.parse(body) as T;
   } catch (error) {

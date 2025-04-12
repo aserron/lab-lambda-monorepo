@@ -3,7 +3,7 @@
 /**
  * Standard API response format
  */
-export interface ApiResponse<T = any> {
+export interface ApiResponse {
   statusCode: number;
   body: string; // JSON stringified response
   headers: Record<string, string>;

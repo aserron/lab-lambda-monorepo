@@ -1,0 +1,6 @@
+packages:
+  - packages/*
+  - packages/lambdas/*
+
+ignoredBuiltDependencies:
+  - esbuild

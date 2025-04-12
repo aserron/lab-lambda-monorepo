@@ -1,27 +1,17 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
     "paths": {
       "@lambda-dev/core/*": ["packages/core/src/*"],
       "@lambda-dev/lambdas/*": ["packages/lambdas/*/src"]
     }
   },
-  "exclude": ["node_modules"]
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/lambdas/http-api" },
+    { "path": "packages/lambdas/websocket" },
+    { "path": "packages/lambdas/events" },
+    { "path": "packages/infrastructure" }
+  ],
+  "files": []
 }

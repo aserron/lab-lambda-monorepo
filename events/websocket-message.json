@@ -1,0 +1,9 @@
+{
+  "requestContext": {
+    "connectionId": "123456789",
+    "domainName": "localhost",
+    "stage": "dev"
+  },
+  "body": "{\"action\":\"message\",\"message\":\"Hello, WebSocket!\"}",
+  "isBase64Encoded": false
+}

@@ -1,0 +1,36 @@
+version = 0.1
+[default]
+[default.global]
+[default.global.parameters]
+stack_name = "lambda-dev"
+
+[default.build]
+[default.build.parameters]
+use_container = true
+parallel = true
+
+[default.deploy]
+[default.deploy.parameters]
+s3_bucket = "lambda-dev-deployment"
+s3_prefix = "lambda-dev"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
+[default.sync]
+[default.sync.parameters]
+watch = true
+use_container = true
+auto_reload = true
+
+[default.local_start_api]
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+host = "0.0.0.0"
+port = 3000
+
+[default.local_start_lambda]
+[default.local_start_lambda.parameters]
+warm_containers = "EAGER"
+host = "0.0.0.0"
+port = 3001

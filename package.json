@@ -18,8 +18,8 @@
     "deploy:local": "bash scripts/deploy-local.sh",
     "test:lambda": "bash scripts/test-lambda.sh",
     "sam:build": "sam build",
-    "sam:local": "sam local start-api --warm-containers EAGER",
-    "sam:invoke": "sam local invoke",
+    "sam:local": "bash scripts/sam-local.sh",
+    "sam:invoke": "bash scripts/sam-invoke.sh",
     "cdk:deploy": "cd packages/infrastructure && pnpm run deploy",
     "cdk:synth": "cd packages/infrastructure && pnpm run synth"
   },

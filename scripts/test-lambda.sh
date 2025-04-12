@@ -13,14 +13,11 @@ fi
 FUNCTION_NAME=$1
 EVENT_FILE=${2:-events/default.json}
 
-# Set AWS CLI to use LocalStack
-export AWS_ACCESS_KEY_ID=test
-export AWS_SECRET_ACCESS_KEY=test
-export AWS_DEFAULT_REGION=us-east-1
-export LOCALSTACK_ENDPOINT=http://localhost:4566
+# Use the aws-local.sh script for AWS CLI commands
+AWS_LOCAL="./scripts/aws-local.sh"
 
 # Check if LocalStack is running
-if ! curl -s $LOCALSTACK_ENDPOINT/_localstack/health > /dev/null; then
+if ! curl -s http://localhost:4566/_localstack/health > /dev/null; then
   echo "LocalStack is not running. Please start the local environment first."
   exit 1
 fi
@@ -36,7 +33,7 @@ fi
 
 # Invoke the Lambda function
 echo "Invoking Lambda function $FUNCTION_NAME with event from $EVENT_FILE..."
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda invoke \
+$AWS_LOCAL lambda invoke \
   --function-name $FUNCTION_NAME \
   --payload file://$EVENT_FILE \
   --cli-binary-format raw-in-base64-out \

@@ -18,6 +18,7 @@
     "deploy:local": "bash scripts/deploy-local.sh",
     "test:lambda": "bash scripts/test-lambda.sh",
     "verify:local": "bash scripts/verify-environment.sh",
+    "aws:local": "bash scripts/aws-local.sh",
     "sam:build": "sam build",
     "sam:local": "bash scripts/sam-local.sh",
     "sam:invoke": "bash scripts/sam-invoke.sh",

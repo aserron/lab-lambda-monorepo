@@ -37,16 +37,34 @@ This document outlines the comprehensive project plan for setting up a local AWS
 - Create `docker-compose.yml` with LocalStack and other required services
 - Configure service ports and environment variables
 - Set up volume mounts for persistent data
+- Add health checks for services
+- Create environment variables file for Docker Compose
+- Handle Docker image availability issues
 
-### 2.2. AWS SAM Configuration
+### 2.2. AWS CLI Configuration
+- Configure AWS CLI to work with LocalStack
+- Create helper script for AWS CLI commands
+- Update all scripts to use the helper script
+- Set up AWS credentials for local development
+
+### 2.3. AWS SAM Configuration
 - Set up AWS SAM CLI for local Lambda testing
 - Create template.yaml for SAM configuration
 - Configure local API Gateway endpoints
+- Create example event files for testing
 
-### 2.3. Development Workflow
+### 2.4. Development Workflow
 - Implement hot-reloading with esbuild and nodemon
 - Create development scripts for common tasks
 - Set up debugging configurations
+- Create script for deploying Lambda functions to LocalStack
+- Implement Lambda function testing script
+
+### 2.5. Verification and Documentation
+- Create verification script for the local environment
+- Document LocalStack and AWS CLI configuration
+- Create comprehensive verification guide
+- Add troubleshooting information
 
 ## 3. Lambda Function Implementation
 

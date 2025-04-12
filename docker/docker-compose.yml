@@ -13,10 +13,20 @@ services:
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
       - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # only required for Pro
       - PERSISTENCE=${PERSISTENCE-}
-      - SERVICES=lambda,apigateway,dynamodb,s3,sqs,sns,cloudwatch,iam
+      - SERVICES=lambda,apigateway,dynamodb,s3,sqs,sns,cloudwatch,iam,logs
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - HOSTNAME_EXTERNAL=localstack
+      - LS_LOG=trace
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   dynamodb-admin:
     container_name: lambda-dev-dynamodb-admin
@@ -29,7 +39,13 @@ services:
       - AWS_ACCESS_KEY_ID=test
       - AWS_SECRET_ACCESS_KEY=test
     depends_on:
-      - localstack
+      localstack:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   s3-explorer:
     container_name: lambda-dev-s3-explorer
@@ -42,7 +58,36 @@ services:
       - AWS_REGION=us-east-1
       - S3_ENDPOINT=http://localstack:4566
     depends_on:
-      - localstack
+      localstack:
+        condition: service_healthy
+
+  sqs-admin:
+    container_name: lambda-dev-sqs-admin
+    image: robolaunch/sqs-admin:latest
+    ports:
+      - "8003:8080"
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+      - AWS_ENDPOINT=http://localstack:4566
+    depends_on:
+      localstack:
+        condition: service_healthy
+
+  lambda-console:
+    container_name: lambda-dev-lambda-console
+    image: mlupin/lambda-console:latest
+    ports:
+      - "8004:8080"
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+      - AWS_ENDPOINT=http://localstack:4566
+    depends_on:
+      localstack:
+        condition: service_healthy
 
 networks:
   default:

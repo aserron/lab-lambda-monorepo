@@ -28,66 +28,71 @@ services:
       timeout: 5s
       retries: 5
 
-  dynamodb-admin:
-    container_name: lambda-dev-dynamodb-admin
-    image: aaronshaf/dynamodb-admin:latest
-    ports:
-      - "8001:8001"
-    environment:
-      - DYNAMO_ENDPOINT=http://localstack:4566
-      - AWS_REGION=us-east-1
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-    depends_on:
-      localstack:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+  # Additional services commented out due to image availability issues
+  # Uncomment and modify if you have compatible images
 
-  s3-explorer:
-    container_name: lambda-dev-s3-explorer
-    image: cloudlibz/s3explorer:latest
-    ports:
-      - "8002:8000"
-    environment:
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_REGION=us-east-1
-      - S3_ENDPOINT=http://localstack:4566
-    depends_on:
-      localstack:
-        condition: service_healthy
+  # dynamodb-admin:
+  #   container_name: lambda-dev-dynamodb-admin
+  #   image: aaronshaf/dynamodb-admin:latest
+  #   ports:
+  #     - "8001:8001"
+  #   environment:
+  #     - DYNAMO_ENDPOINT=http://localstack:4566
+  #     - AWS_REGION=us-east-1
+  #     - AWS_ACCESS_KEY_ID=test
+  #     - AWS_SECRET_ACCESS_KEY=test
+  #   depends_on:
+  #     localstack:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8001"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
 
-  sqs-admin:
-    container_name: lambda-dev-sqs-admin
-    image: robolaunch/sqs-admin:latest
-    ports:
-      - "8003:8080"
-    environment:
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_REGION=us-east-1
-      - AWS_ENDPOINT=http://localstack:4566
-    depends_on:
-      localstack:
-        condition: service_healthy
+  # s3-explorer:
+  #   container_name: lambda-dev-s3-explorer
+  #   image: cloudlibz/s3explorer:latest
+  #   ports:
+  #     - "8002:8000"
+  #   environment:
+  #     - AWS_ACCESS_KEY_ID=test
+  #     - AWS_SECRET_ACCESS_KEY=test
+  #     - AWS_REGION=us-east-1
+  #     - S3_ENDPOINT=http://localstack:4566
+  #   depends_on:
+  #     localstack:
+  #       condition: service_healthy
 
-  lambda-console:
-    container_name: lambda-dev-lambda-console
-    image: mlupin/lambda-console:latest
-    ports:
-      - "8004:8080"
-    environment:
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - AWS_REGION=us-east-1
-      - AWS_ENDPOINT=http://localstack:4566
-    depends_on:
-      localstack:
-        condition: service_healthy
+  # sqs-admin:
+  #   container_name: lambda-dev-sqs-admin
+  #   image: robolaunch/sqs-admin:latest
+  #   ports:
+  #     - "8003:8080"
+  #   environment:
+  #     - AWS_ACCESS_KEY_ID=test
+  #     - AWS_SECRET_ACCESS_KEY=test
+  #     - AWS_REGION=us-east-1
+  #     - AWS_ENDPOINT=http://localstack:4566
+  #   depends_on:
+  #     localstack:
+  #       condition: service_healthy
+
+  # Lambda Console service removed due to image availability issues
+  # Uncomment and modify if you have a compatible image
+  # lambda-console:
+  #   container_name: lambda-dev-lambda-console
+  #   image: your-lambda-console-image:latest
+  #   ports:
+  #     - "8004:8080"
+  #   environment:
+  #     - AWS_ACCESS_KEY_ID=test
+  #     - AWS_SECRET_ACCESS_KEY=test
+  #     - AWS_REGION=us-east-1
+  #     - AWS_ENDPOINT=http://localstack:4566
+  #   depends_on:
+  #     localstack:
+  #       condition: service_healthy
 
 networks:
   default:

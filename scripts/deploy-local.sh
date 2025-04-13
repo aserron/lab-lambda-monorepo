@@ -5,14 +5,11 @@ set -e
 
 echo "Deploying Lambda functions to LocalStack..."
 
-# Set AWS CLI to use LocalStack
-export AWS_ACCESS_KEY_ID=test
-export AWS_SECRET_ACCESS_KEY=test
-export AWS_DEFAULT_REGION=us-east-1
-export LOCALSTACK_ENDPOINT=http://localhost:4566
+# Use the aws-local.sh script for AWS CLI commands
+AWS_LOCAL="./scripts/aws-local.sh"
 
 # Check if LocalStack is running
-if ! curl -s $LOCALSTACK_ENDPOINT/_localstack/health > /dev/null; then
+if ! curl -s http://localhost:4566/_localstack/health > /dev/null; then
   echo "LocalStack is not running. Please start the local environment first."
   exit 1
 fi
@@ -23,7 +20,7 @@ pnpm run build
 
 # Deploy HTTP API Lambda functions
 echo "Deploying HTTP API Lambda functions..."
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name hello-function \
   --runtime nodejs18.x \
   --handler dist/handlers/hello.handler \
@@ -37,7 +34,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
 
 # Deploy WebSocket Lambda functions
 echo "Deploying WebSocket Lambda functions..."
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name connect-function \
   --runtime nodejs18.x \
   --handler dist/handlers/connect.handler \
@@ -49,7 +46,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
   --update-config true \
   2>&1 | grep -v "ResourceConflictException"
 
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name disconnect-function \
   --runtime nodejs18.x \
   --handler dist/handlers/disconnect.handler \
@@ -61,7 +58,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
   --update-config true \
   2>&1 | grep -v "ResourceConflictException"
 
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name message-function \
   --runtime nodejs18.x \
   --handler dist/handlers/message.handler \
@@ -75,7 +72,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
 
 # Deploy Event-driven Lambda functions
 echo "Deploying Event-driven Lambda functions..."
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name s3-processor-function \
   --runtime nodejs18.x \
   --handler dist/handlers/s3-processor.handler \
@@ -87,7 +84,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
   --update-config true \
   2>&1 | grep -v "ResourceConflictException"
 
-aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
+$AWS_LOCAL lambda create-function \
   --function-name sqs-consumer-function \
   --runtime nodejs18.x \
   --handler dist/handlers/sqs-consumer.handler \
@@ -101,7 +98,7 @@ aws --endpoint-url=$LOCALSTACK_ENDPOINT lambda create-function \
 
 # Create API Gateway
 echo "Creating API Gateway..."
-aws --endpoint-url=$LOCALSTACK_ENDPOINT apigateway create-rest-api \
+$AWS_LOCAL apigateway create-rest-api \
   --name lambda-dev-api \
   2>&1 | grep -v "ConflictException"
 

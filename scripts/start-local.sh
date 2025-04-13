@@ -25,4 +25,4 @@ echo "LocalStack UI: http://localhost:4566/_localstack/ui"
 echo "DynamoDB Admin: http://localhost:8001"
 echo "S3 Explorer: http://localhost:8002"
 echo "SQS Admin: http://localhost:8003"
-echo "Lambda Console: http://localhost:8004"
+# echo "Lambda Console: http://localhost:8004" # Service temporarily disabled

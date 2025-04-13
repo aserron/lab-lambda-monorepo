@@ -50,13 +50,13 @@ echo "✅ Event-Driven Lambda function tested successfully"
 # Check AWS resources
 echo "Checking AWS resources..."
 echo "DynamoDB tables:"
-aws --endpoint-url=http://localhost:4566 dynamodb list-tables
+./scripts/aws-local.sh dynamodb list-tables
 echo "S3 buckets:"
-aws --endpoint-url=http://localhost:4566 s3 ls
+./scripts/aws-local.sh s3 ls
 echo "SQS queues:"
-aws --endpoint-url=http://localhost:4566 sqs list-queues
+./scripts/aws-local.sh sqs list-queues
 echo "Lambda functions:"
-aws --endpoint-url=http://localhost:4566 lambda list-functions
+./scripts/aws-local.sh lambda list-functions
 echo "✅ AWS resources verified successfully"
 
 echo "Verification completed successfully! The local development environment is working correctly."

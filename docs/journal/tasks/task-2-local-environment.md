@@ -1,5 +1,5 @@
 ---
-title: "Task 1: Local Development Environment Setup"
+title: "Task 2: Local Development Environment Setup"
 date: "2025-04-20"
 last_updated: "2025-04-20"
 status: "completed"
@@ -7,7 +7,7 @@ priority: "high"
 tags: ["docker", "localstack", "aws-cli", "lambda", "verification"]
 ---
 
-# Task 1: Local Development Environment Setup
+# Task 2: Local Development Environment Setup
 
 ## Overview
 
@@ -23,7 +23,7 @@ This task involved setting up a comprehensive local development environment for 
 
 ## Subtasks
 
-### Subtask 1.1: Configure Docker Compose with LocalStack
+### Subtask 2.1: Configure Docker Compose with LocalStack
 
 - Created `docker-compose.yml` with LocalStack and supporting services
 - Added health checks for services to ensure proper startup
@@ -33,13 +33,13 @@ This task involved setting up a comprehensive local development environment for 
 
 #### Issues and Solutions
 
-**Issue 1.1.1: Docker Image Availability**
+**Issue 2.1.1: Docker Image Availability**
 - **Problem**: Some Docker images specified in the `docker-compose.yml` file were not available or required authentication.
 - **Root Cause**: The images either didn't exist in Docker Hub or were private repositories.
 - **Solution**: Modified the Docker Compose file to focus on essential services (LocalStack) and commented out problematic services.
 - **Prevention**: Research image availability before including in Docker Compose files and consider using more widely available alternatives.
 
-### Subtask 1.2: Create Local Development Scripts
+### Subtask 2.2: Create Local Development Scripts
 
 - Updated existing scripts for starting and stopping the local environment
 - Created new script for hot-reloading during development
@@ -49,20 +49,20 @@ This task involved setting up a comprehensive local development environment for 
 
 #### Issues and Solutions
 
-**Issue 1.2.1: Script Execution Permissions**
+**Issue 2.2.1: Script Execution Permissions**
 - **Problem**: Scripts were not executable by default.
 - **Root Cause**: Git doesn't preserve execution permissions across platforms.
 - **Solution**: Added explicit `chmod +x` commands to make scripts executable.
 - **Prevention**: Include instructions in the README to make scripts executable after checkout.
 
-### Subtask 1.3: Configure AWS SAM for Local Testing
+### Subtask 2.3: Configure AWS SAM for Local Testing
 
 - Created SAM configuration file (samconfig.toml)
 - Added scripts for running AWS SAM locally
 - Created example event files for testing Lambda functions
 - Updated package.json with new scripts for AWS SAM
 
-### Subtask 1.4: AWS CLI Configuration
+### Subtask 2.4: AWS CLI Configuration
 
 - Configured AWS CLI to work with LocalStack
 - Created helper script (`aws-local.sh`) for AWS CLI commands
@@ -71,13 +71,13 @@ This task involved setting up a comprehensive local development environment for 
 
 #### Issues and Solutions
 
-**Issue 1.4.1: AWS CLI Configuration**
+**Issue 2.4.1: AWS CLI Configuration**
 - **Problem**: AWS CLI commands were failing when trying to interact with LocalStack.
 - **Root Cause**: AWS CLI was not configured to use the LocalStack endpoint.
 - **Solution**: Created a helper script (`aws-local.sh`) to set the correct endpoint and credentials.
 - **Prevention**: Document the AWS CLI configuration requirements and provide helper scripts.
 
-### Subtask 1.5: Verification and Documentation
+### Subtask 2.5: Verification and Documentation
 
 - Created verification script for the local environment
 - Documented LocalStack and AWS CLI configuration

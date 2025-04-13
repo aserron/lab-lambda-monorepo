@@ -12,7 +12,7 @@ This directory contains journals for each task in the Lambda Dev project. Each j
 
 ## Available Task Journals
 
-- [Task 1: Local Development Environment Setup](./task-1-local-environment.md)
+- [Task 2: Local Development Environment Setup](./task-2-local-environment.md)
 
 ## Task Journal Template
 

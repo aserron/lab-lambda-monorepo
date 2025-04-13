@@ -15,6 +15,7 @@ This directory contains comprehensive documentation for the Lambda Dev project. 
 ```
 docs/
 ├── README.md                        # This file
+├── documentation-map.md             # Documentation structure and organization
 ├── documentation-rules.md           # Rules for creating documentation
 ├── project-plan.md                  # High-level project plan
 ├── project-overview.md              # Project overview and architecture
@@ -28,13 +29,16 @@ docs/
 └── journal/                         # Development journal
     ├── tasks/                       # Task journals
     ├── issues/                      # Issue documentation
-    └── learnings/                   # Learning documentation
+    ├── learnings/                   # Learning documentation
+    └── progress/                    # Progress reports
 ```
 
 ## Documentation Types
 
 ### Project Documentation
 
+- [Documentation Map](./documentation-map.md): Documentation structure and organization guide
+- [Documentation Rules](./documentation-rules.md): Rules for creating documentation
 - [Project Plan](./project-plan.md): Comprehensive plan for the project
 - [Project Overview](./project-overview.md): Overview of the project architecture and components
 - [Verification Guide](./verification-guide.md): Guide for verification and testing
@@ -83,6 +87,7 @@ Documentation of the development process:
 - Task journals: Documentation of completed tasks
 - Issue documentation: Documentation of issues encountered and their solutions
 - Learning documentation: Documentation of learnings and insights
+- Progress reports: Documentation of development progress over time
 
 ## Using This Documentation
 
